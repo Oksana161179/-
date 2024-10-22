@@ -16,6 +16,9 @@ def load_image(url):#создаем функцию загрузки изобра
         image_data = BytesIO(response.content)#делаем изображение:
         # в переменную-image_data положим обработанное изображение
         img = Image.open(image_data)#делаем изображение нормальной картинкой
+        img.thumbnail((600, 480), Image.Resampling.LANCZOS)#создаем окно для изображения,
+        # чтобы все изображения были одного размера. Image.Resampling.LANCZOS-для того,
+        # чтобы качество картинки не ухудшалось, когда мы изменяум ее размер
         return ImageTk.PhotoImage(img)#функция вернет картинку-img
     except Exception as e:#если ошибка
         print(f"Произошла ошибка: {e}")
@@ -32,7 +35,7 @@ def set_image():#создаем функцию для проверки и уст
 
 window = Tk()#создаем окно
 window.title("Cats!")#заголовок окна
-window.geometry("600x480")#размер окна
+window.geometry("600x520")#размер окна
 
 label = Label()#создаем метку, на которую будем выводить изображение
 label.pack()
