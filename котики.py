@@ -3,9 +3,6 @@ from PIL import Image, ImageTk#работа с изображениями
 import requests
 from io import BytesIO #io-работа с вводом, выводом информации. BytesIO-работа с байтами
 
-from pygame.display import update
-from pygame.examples.cursors import image
-
 
 def load_image(url):#создаем функцию загрузки изображений
     try:#обрабатываем исключения
@@ -32,6 +29,9 @@ def set_image():#создаем функцию для проверки и уст
         # таким способом устанавливаем картинку на метку
         label.image = img  # для того, чтобы сборщик мусора не убрал картинку
 
+def exit():#создаем функцию выхода
+    window.destroy()#уничтожаем окно
+
 
 window = Tk()#создаем окно
 window.title("Cats!")#заголовок окна
@@ -40,8 +40,16 @@ window.geometry("600x520")#размер окна
 label = Label()#создаем метку, на которую будем выводить изображение
 label.pack()
 
-update_button = Button(text="Обновить", command=set_image)#создаем кнопку для обновления(update) изображения
-update_button.pack()
+menu_bar = Menu(window)#создаем меню
+window.config(menu=menu_bar)
+
+file_menu = Menu(menu_bar, tearoff=0)
+menu_bar.add_cascade(label="Файл", menu=file_menu)
+file_menu.add_command(label="Загрузить фото", command=set_image)
+file_menu.add_separator()
+file_menu.add_command(label="Выход", command=exit)
+
+
 
 url = "https://cataas.com/cat"#url-адрес в интернете, по которому будем искать картинки
 
