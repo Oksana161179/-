@@ -1,7 +1,10 @@
 from tkinter import *
+from tkinter import ttk#выпадающий список. ttk-набор улучшеных виджетов
 from PIL import Image, ImageTk#работа с изображениями
 import requests
 from io import BytesIO #io-работа с вводом, выводом информации. BytesIO-работа с байтами
+
+Allowed_tags = ["sleep", "jump", "fight", "black", "white", "bengal", "siamese", "cute", "box"]#создаем список возможных тегов
 
 
 def load_image(url):#создаем функцию загрузки изображений
@@ -22,7 +25,7 @@ def load_image(url):#создаем функцию загрузки изобра
         return None#если произошла ошибка, то функция ничего не вернет
 
 def open_new_window():#создаем функцию для открытия новых окон
-    tag = tag_entry.get()#считываем tag. получаем в переменную tag, то что ввел пользователь
+    tag = tag_combobox.get()#считываем tag. получаем в переменную tag, то что ввел пользователь
     url_tag = f"https://cataas.com/cat/{tag}" if tag else "https://cataas.com/cat"#получаем url c tag
     img = load_image(url_tag)  # создаем функцию загрузки изображений
 
@@ -43,12 +46,6 @@ window = Tk()#создаем окно
 window.title("Cats!")#заголовок окна
 window.geometry("600x520")#размер окна
 
-tag_entry = Entry()#добавляем поле ввода в главное окно
-tag_entry.pack()
-
-load_button = Button(text="Загрузить по тегу", command=open_new_window)#добавляем кнопку загрузки
-load_button.pack()
-
 menu_bar = Menu(window)#создаем меню
 window.config(menu=menu_bar)#окно-window знает, что в нем появилось меню
 
@@ -59,5 +56,15 @@ file_menu.add_separator()
 file_menu.add_command(label="Выход", command=exit)
 
 url = "https://cataas.com/cat"#url-адрес в интернете, по которому будем искать картинки
+
+tag_label = Label(text="Выбери тег")#создаем метку на которой будет написан текст
+tag_label.pack()
+
+tag_combobox = ttk.Combobox(values=Allowed_tags)#values-значение, Allowed_tags-разрешенные списки
+tag_combobox.pack()
+
+load_button = Button(text="Загрузить по тегу", command=open_new_window)#добавляем кнопку загрузки
+load_button.pack()
+
 
 window.mainloop()
