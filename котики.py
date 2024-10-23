@@ -21,41 +21,43 @@ def load_image(url):#создаем функцию загрузки изобра
         print(f"Произошла ошибка: {e}")
         return None#если произошла ошибка, то функция ничего не вернет
 
-def open_new_window():#создаем функцию для открытия нового окна для каждой картинки
-    img = load_image(url)  # создаем функцию загрузки изображений
+def open_new_window():#создаем функцию для открытия новых окон
+    tag = tag_entry.get()#считываем tag. получаем в переменную tag, то что ввел пользователь
+    url_tag = f"https://cataas.com/cat/{tag}" if tag else "https://cataas.com/cat"#получаем url c tag
+    img = load_image(url_tag)  # создаем функцию загрузки изображений
 
     if img:  # делаем проверку: если img не пустая
-        new_window = Toplevel()#создаем окно
-        new_window.title("Картинка с котиком")#задаем заголовок окну
+        new_window = Toplevel()#создаем новое окно для каждой картинки
+        new_window.title("Картинка с котиком")#задаем название окну
         new_window.geometry("600x480")#задаем размер окну
-        label = Label(new_window, image=img)  # создаем метку в новом окне, на которую будем выводить изображение.
-        # и изображение(image) положим в img
+        label = Label(new_window, image=img)  # создаем метку, на которую будем выводить изображение.
+        # изображение-image кладем в img
         label.pack()
         label.image = img  # для того, чтобы сборщик мусора не убрал картинку
 
 def exit():#создаем функцию выхода
-    window.destroy()#уничтожаем окно
+    window.destroy()#уничтожаем окно, программа завершена
 
 
 window = Tk()#создаем окно
 window.title("Cats!")#заголовок окна
 window.geometry("600x520")#размер окна
 
+tag_entry = Entry()#добавляем поле ввода в главное окно
+tag_entry.pack()
 
+load_button = Button(text="Загрузить по тегу", command=open_new_window)#добавляем кнопку загрузки
+load_button.pack()
 
 menu_bar = Menu(window)#создаем меню
-window.config(menu=menu_bar)
+window.config(menu=menu_bar)#окно-window знает, что в нем появилось меню
 
-file_menu = Menu(menu_bar, tearoff=0)
+file_menu = Menu(menu_bar, tearoff=0)#tearoff-чтобы меню не отклеивалось
 menu_bar.add_cascade(label="Файл", menu=file_menu)
-file_menu.add_command(label="Загрузить фото", command=set_image)
+file_menu.add_command(label="Загрузить фото", command=open_new_window)
 file_menu.add_separator()
 file_menu.add_command(label="Выход", command=exit)
 
-
-
 url = "https://cataas.com/cat"#url-адрес в интернете, по которому будем искать картинки
-
-set_image()#функция, при запуске которой появляется первая картинка
 
 window.mainloop()
